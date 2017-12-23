@@ -11,7 +11,7 @@ CC := arm-linux-gcc
 OBJ_DUMP := arm-linux-objdump
 OBJ_COPY := arm-linux-objcopy
 LD := arm-linux-ld
-CFLAGS := $(INCS) -g -Wall -Wno-strict-aliasing -O0
+CFLAGS := $(INCS) -Wall -Wno-strict-aliasing -O0
 LIBS :=
 $(shell mkdir -p $(OBJS_DIR))
 

@@ -6,14 +6,23 @@
  ************************************************************************/
 
 #include "led.h"
+#include "common.h"
 
 int main(void)
 {
     led_init();
-    
-    LED1_ON;
-    LED2_ON;
-    LED4_ON;
+    while(1)
+    {
+        LED1_ON;
+        delay(77777);
+        LED1_OFF;
+        LED2_ON;
+        delay(77777);
+        LED2_OFF;
+        LED4_ON; 
+        delay(77777);
+        LED4_OFF;
+    }
     
     return 0;
 }

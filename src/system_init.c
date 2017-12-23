@@ -9,6 +9,5 @@
 
 void system_init(void)
 {
-    WATCHDOG_REG *ptr_reg = WATCHDOG;
-    ptr_reg->con &= ~(0x1 << 5);
+    WATCHDOG->con &= ~(0x1 << 5);
 }

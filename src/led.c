@@ -7,16 +7,13 @@
 
 #include "led.h"
 
- void led_init(void)
- {
-     GPIO_REG *ptr_reg = GPIOF;
-     ptr_reg->con &= ~((0x3<<8) | (0x3<<10) | (0x1<<12));
-     ptr_reg->con |= (0x1<<8) | (0x1<<10) | (0x1<<12);
-     
-     LED1_OFF;
-     LED2_OFF;
-     LED4_OFF;
-
- }
-
-
+void led_init(void)
+{
+    GPIO_REG *ptr_reg = GPIOF;
+    ptr_reg->con &= ~((0x3<<8) | (0x3<<10) | (0x1<<12));
+    ptr_reg->con |= (0x1<<8) | (0x1<<10) | (0x1<<12);
+    
+    LED1_OFF;
+    LED2_OFF;
+    LED4_OFF;
+}
