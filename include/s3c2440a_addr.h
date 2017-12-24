@@ -18,6 +18,8 @@ typedef unsigned short  uint16_t;
 typedef unsigned int    uint32_t;
 typedef unsigned long   uint64_t;
 
+#define CLOCK_POWER_BASE_ADDR                       ((uint64_t)0x4C000000)
+
 #define WATCHDOG_BASE_ADDR                          ((uint64_t)0x53000000)
 
 #define GPIOA_BASE_ADDR                             ((uint64_t)0x56000000)

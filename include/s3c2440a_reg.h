@@ -22,6 +22,16 @@ typedef struct watchdog_register_struct{
     volatile uint32_t count;
 }WATCHDOG_REG;
 
+typedef struct clock_power_register_struct{
+    volatile uint32_t locktime;
+    volatile uint32_t mpllcon;
+    volatile uint32_t upllcon;
+    volatile uint32_t clkcon;
+    volatile uint32_t clkslow;
+    volatile uint32_t clkdivn;
+    volatile uint32_t camdivn;
+}CLOCK_REG;
+
 #define GPIOA                                       ((GPIO_REG *)GPIOA_BASE_ADDR)
 #define GPIOB                                       ((GPIO_REG *)GPIOB_BASE_ADDR)
 #define GPIOC                                       ((GPIO_REG *)GPIOC_BASE_ADDR)
@@ -33,5 +43,7 @@ typedef struct watchdog_register_struct{
 #define GPIOJ                                       ((GPIO_REG *)GPIOJ_BASE_ADDR)
 
 #define WATCHDOG                                    ((WATCHDOG_REG *)WATCHDOG_BASE_ADDR)
+
+#define CLOCK                                       ((CLOCK_REG *)CLOCK_POWER_BASE_ADDR)
 
 #endif

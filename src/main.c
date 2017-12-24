@@ -14,13 +14,13 @@ int main(void)
     while(1)
     {
         LED1_ON;
-        delay(77777);
+        delay(777777);
         LED1_OFF;
         LED2_ON;
-        delay(77777);
+        delay(777777);
         LED2_OFF;
         LED4_ON; 
-        delay(77777);
+        delay(777777);
         LED4_OFF;
     }
     
