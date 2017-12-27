@@ -8,15 +8,7 @@
 #ifndef __S3C2440A_ADDR_H
 #define __S3C2440A_ADDR_H
 
-typedef char            int8_t;
-typedef short           int16_t;
-typedef int             int32_t;
-typedef long            int64_t;
-
-typedef unsigned char   uint8_t;
-typedef unsigned short  uint16_t;
-typedef unsigned int    uint32_t;
-typedef unsigned long   uint64_t;
+#include "stdint.h"
 
 #define CLOCK_POWER_BASE_ADDR                       ((uint64_t)0x4C000000)
 

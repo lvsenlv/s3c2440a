@@ -1,0 +1,7 @@
+SECTIONS
+{
+    . = 0x00000000;
+    .start : AT(0) { ./startup.o ./system_init.o }
+    . = 0x00000800;
+    .text : AT(2048) { *(.text) }
+}
