@@ -5,7 +5,7 @@ BUILD_DIR = $(ROOT_DIR)/build
 OBJS_DIR = $(ROOT_DIR)/build/object
 SRC_DIR = $(ROOT_DIR)/src
 
-OBJS = led.o main.o
+OBJS = led.o uart.o main.o
 
 CC := arm-linux-gcc
 OBJ_DUMP := arm-linux-objdump

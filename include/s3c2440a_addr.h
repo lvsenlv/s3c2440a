@@ -12,6 +12,8 @@
 
 #define CLOCK_POWER_BASE_ADDR                       ((uint64_t)0x4C000000)
 
+#define UART0_BASE_ADDR                             ((uint64_t)0x50000000)
+
 #define WATCHDOG_BASE_ADDR                          ((uint64_t)0x53000000)
 
 #define GPIOA_BASE_ADDR                             ((uint64_t)0x56000000)

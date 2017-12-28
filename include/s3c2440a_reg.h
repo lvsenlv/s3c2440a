@@ -32,6 +32,20 @@ typedef struct clock_power_register_struct{
     volatile uint32_t camdivn;
 }CLOCK_REG;
 
+typedef struct uart_register_struct{
+    volatile uint32_t ulcon;
+    volatile uint32_t ucon;
+    volatile uint32_t ufcon;
+    volatile uint32_t umcon;
+    volatile uint32_t utrstat;
+    volatile uint32_t uerstat;
+    volatile uint32_t ufstat;
+    volatile uint32_t umstat;  
+    volatile uint32_t utxh;
+    volatile uint32_t urxh;
+    volatile uint32_t ubrdiv;
+}UART_REG;
+
 #define GPIOA                                       ((GPIO_REG *)GPIOA_BASE_ADDR)
 #define GPIOB                                       ((GPIO_REG *)GPIOB_BASE_ADDR)
 #define GPIOC                                       ((GPIO_REG *)GPIOC_BASE_ADDR)
@@ -45,5 +59,7 @@ typedef struct clock_power_register_struct{
 #define WATCHDOG                                    ((WATCHDOG_REG *)WATCHDOG_BASE_ADDR)
 
 #define CLOCK                                       ((CLOCK_REG *)CLOCK_POWER_BASE_ADDR)
+
+#define UART0                                       ((UART_REG *)UART0_BASE_ADDR)
 
 #endif
