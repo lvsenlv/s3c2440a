@@ -22,11 +22,61 @@ void uart_init(void)
     reg->ubrdiv = UBRDIV;
 }
 
-int fputc(int ch, FILE *fp)
+void uart_print_char(char ch)
 {
-    UART0->utxh = ch & 0xFF;
-    while(!(UART0->utrstat & 0x2))
-    {}
-    
-    return ch;
+    UART0->utxh = ch;
+    while(!(UART0->utrstat & 0x2));
 }
+
+void uart_print_string(char *str)
+{
+    while('\0' != *str)
+    {
+        UART0->utxh = *str++;
+        while(!(UART0->utrstat & 0x2));
+    }
+}
+
+void uart_print_int_num(int32_t num)
+{
+    uart_print_long_num((int64l_t)num);
+}
+
+void uart_print_long_num(int64_t num)
+{
+    if(0 > num)
+    {
+        num *= -1;
+        UART0->utxh = '-';
+        while(!(UART0->utrstat & 0x2));
+    }
+    
+    char buf[32];
+    char tmp;
+    int i;
+    int count = 0;
+
+    buf[0] = '0';
+    
+    for(i = 0; num != 0; i++)
+    {
+        buf[i] = (num % 10) + '0';
+        num = num / 10;   
+    }
+
+    if(0 != i)
+        i--;
+    
+    for(; i >= 0; i--)
+    {
+        UART0->utxh = buf[i];
+        while(!(UART0->utrstat & 0x2));
+    }
+
+    UART0->utxh = '\r';
+    while(!(UART0->utrstat & 0x2));
+
+    UART0->utxh = '\n';
+    while(!(UART0->utrstat & 0x2));
+}
+

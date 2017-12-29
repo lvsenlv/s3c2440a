@@ -14,27 +14,16 @@ int main(void)
     led_init();
     uart_init();
 
-    uint8_t ch = 'a';
-    
+    char buf[20];
+    int i = 0;
+
     while(1)
     {
         LED1_ON;
-        delay(777777);
+        uart_print_int_num(i++);
+        delay(0x2FFFFF);
         LED1_OFF;
-        LED2_ON;
-        delay(777777);
-        LED2_OFF;
-        LED4_ON; 
-        delay(777777);
-        LED4_OFF;
-        
-        UART0->utxh = ch;
-        while(!(UART0->utrstat & 0x2))
-        {}
-        
-        ch++;
-        if('z' < ch)
-            ch = 'a';
+        delay(0x2FFFFF);
     }
     
     return 0;

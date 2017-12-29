@@ -15,5 +15,9 @@
 #define UBRDIV                                      (((int32_t)(UART_CLK/(BUAD_RATE * 16) + 0.5)) - 1)
 
 void uart_init(void);
+void uart_print_char(char ch);
+void uart_print_string(char *str);
+void uart_print_int_num(int num);
+void uart_print_long_num(int64_t num);
 
 #endif
