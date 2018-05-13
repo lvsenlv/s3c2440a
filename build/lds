@@ -1,6 +1,6 @@
-SECTIONS
-{
+SECTIONS{
     . = 0x00000000;
-    .start : AT(0) { ./startup.o ./system_init.o }
-    .text : { *(.text) }
+    start : AT(0) { ../start_up/start_up.o ../start_up/sys_init.o }
+    . = 0x30000000;
+    .text : AT(4096) { *(.text) }
 }

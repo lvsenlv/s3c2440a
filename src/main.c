@@ -2,29 +2,25 @@
 	> File Name: main.c
 	> Author: 
 	> Mail: 
-	> Created Time: 2017年12月23日 星期六 00时04分46秒
+	> Created Time: 2018年05月13日 星期日 23时00分00秒
  ************************************************************************/
 
 #include "led.h"
-#include "common.h"
-#include "uart.h"
 
 int main(void)
 {
-    led_init();
-    uart_init();
-
-    char buf[20];
-    int i = 0;
-
-    while(1)
+    do
     {
-        LED1_ON;
-        uart_print_int_num(i++);
-        delay(0x2FFFFF);
-        LED1_OFF;
-        delay(0x2FFFFF);
-    }
-    
+        LED_BUSY_ON();
+        delay(0xFFFF);
+        LED_BUSY_OFF();
+        LED_ERR_ON();
+        delay(0xFFFF);
+        LED_ERR_OFF();
+        LED_READY_ON();
+        delay(0xFFFF);
+        LED_READY_OFF();
+    }while(1);
+
     return 0;
 }
