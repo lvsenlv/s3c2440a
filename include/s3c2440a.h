@@ -16,6 +16,10 @@ typedef unsigned short  uint16_t;
 typedef unsigned int    uint32_t;
 
 #define __IO                                volatile
+#define PACKED                              __attribute__((packed))
+#define ALIGN_4K                            __attribute__((aligned(4)))
+#define PRINTF_FORMAT                       __attribute__((__format__ (__printf__, 1, 2)))
+
 
 #define NOP() \
         do \
@@ -43,6 +47,9 @@ typedef unsigned int    uint32_t;
 #define NAND_BASE                           ((uint32_t)0x4E000000)
 #define NAND                                ((nand_reg_t *)NAND_BASE)
 
+#define UART0_BASE                          ((uint32_t)0x50000000)
+#define UART0                               ((uart_register_t *)UART0_BASE)
+
 typedef struct gpio_register_struct {
     __IO uint32_t CON;
     __IO uint32_t DAT;
@@ -67,6 +74,20 @@ typedef struct nand_register_struct {
     __IO uint32_t NFSBLK;
     __IO uint32_t NFEBLK;
 }nand_reg_t;
+
+typedef struct uart_register_struct {
+    __IO uint32_t ULCON;
+    __IO uint32_t UCON;
+    __IO uint32_t UFCON;
+    __IO uint32_t UMCON;
+    __IO uint32_t UTRSTAT;
+    __IO uint32_t UERSTAT;
+    __IO uint32_t UFSTAT;
+    __IO uint32_t UMSTAT;
+    __IO uint32_t UTXH;
+    __IO uint32_t URXH;
+    __IO uint32_t UBRDIV;
+}uart_register_t;
 
 static inline void delay(uint32_t count)
 {

@@ -1,6 +1,16 @@
 SECTIONS{
     . = 0x00000000;
     start : AT(0) { ../start_up/start_up.o ../start_up/sys_init.o }
+
     . = 0x30000000;
     .text : AT(4096) { *(.text) }
+
+    . = ALIGN(4);
+    .rodata : { *(.rodata) }
+
+    . = ALIGN(4);
+    .data : { *(.data) }
+
+    . = ALIGN(4);
+    .bss : { *(.bss) }
 }

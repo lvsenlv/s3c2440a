@@ -10,13 +10,11 @@ SRC_DIR             = ../src
 INC_DIR             = ../include
 OBJ_DIR             = ./object
 LIB_DIR             = ../lib
-LIBS                = libc.a
-OBJS                = main.o nand_flash.o
-DEF                 =  
-INC                 = -I../include -I$(LIB_DIR)
+LIBS                = -L../lib/libc/build/ -lc
+OBJS                = main.o nand_flash.o uart.o
+DEF                 = -D__REDIRECTION
+INC                 = -I../include
 TARGET              = $(TARGET_BASE_NAME)
-
-export CC LD AR OBJCOPY OBJDUMP INC CFLAGS CPPFLAGS
 
 $(shell mkdir -p $(OBJ_DIR))
 
@@ -26,16 +24,16 @@ start_up :
 	$(CC) -c ../start_up/$@.s -o ../start_up/$@.o -O0
 	$(CC) -c ../start_up/sys_init.c -o ../start_up/sys_init.o $(INC) -Wall -Werror -O3
 
-$(TARGET) : $(LIBS) $(OBJS)
-	$(LD) -Tlds $(wildcard $(OBJ_DIR)/*.o) $(wildcard $(LIB_DIR)/*.a) -o $@
+$(TARGET) : before $(OBJS)
+	$(LD) -Tlds $(wildcard $(OBJ_DIR)/*.o) $(LIBS) -o $@
 	$(OBJCOPY) -O binary -S $@ $@.bin
 	$(OBJDUMP) -D -m arm $@ > dis
 
-ifeq ($(wildcard $(LIB_DIR)/libc.a),)
+before : libc.a
+ifeq ($(wildcard $(LIB_DIR)/libc/build/libc.a),)
 libc.a :
-	$(MAKE) -C $(LIB_DIR)/libc/build
-	cp $(LIB_DIR)/libc/build/libc.a $(LIB_DIR)
-	cp $(LIB_DIR)/libc/include/printf.h $(LIB_DIR)
+	$(MAKE) -C $(LIB_DIR)/libc/build DEF="$(DEF)"
+	cp $(LIB_DIR)/libc/include/printf.h $(INC_DIR)
 else
 libc.a :
 endif

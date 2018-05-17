@@ -5,12 +5,12 @@ AR                  = arm-linux-ar
 OBJCOPY             = arm-linux-objcopy
 OBJDUMP             = arm-linux-objdump
 LIBS                = 
-CFLAGS              = -Wall -Werror -O3 -nostdinc -fno-builtin
+CFLAGS              = -Wall -O3 -nostdinc -fno-builtin
 SRC_DIR             = ../src
 OBJ_DIR             = ./object
 LIB_DIR             = ./
 OBJS                = div64.o lib1funcs.o ctype.o muldi3.o printf.o string.o vsprintf.o
-DEF                 =  
+DEF                 = 
 INC                 = -I../include 
 TARGET              = $(TARGET_BASE_NAME)
 
