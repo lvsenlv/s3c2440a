@@ -6,10 +6,10 @@ SECTIONS{
     .text : AT(4096) { *(.text) }
 
     . = ALIGN(4);
-    .rodata : { *(.rodata) }
+    .rodata : AT((LOADADDR(.text)+SIZEOF(.text)+0x3)&~(0x3)) { *(.rodata) }
 
     . = ALIGN(4);
-    .data : { *(.data) }
+    .data : AT((LOADADDR(.text)+SIZEOF(.text)+0x3)&~(0x3)) { *(.data) }
 
     . = ALIGN(4);
     .bss : { *(.bss) }
