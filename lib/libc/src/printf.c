@@ -36,7 +36,7 @@ int printf(const char *fmt, ...)
 	len = vsprintf((char *)g_pcOutBuf,fmt,args);
 	va_end(args);
 
-	for (i = 0; i < strlen((char *)g_pcOutBuf); i++)
+	for (i = 0; '\0' != g_pcOutBuf[i]; i++)
 	{
 #ifdef __REDIRECTION
 		*uart_utxh0 = g_pcOutBuf[i];
