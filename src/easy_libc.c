@@ -12,7 +12,7 @@ struct timeval g_StartTime, g_StopTime;
 
 int main(void)
 {
-    char buf[1024];
+    char buf[1024*1024];
     int i;
     long time = 0;
 
@@ -34,7 +34,7 @@ int main(void)
 
 
 
-int int_to_strn(char *buf_ptr, int buf_size, int data)
+static int int_to_strn(char *buf_ptr, int buf_size, int data)
 {
     char *cur_ptr;
     char *end_ptr;
@@ -73,7 +73,7 @@ int int_to_strn(char *buf_ptr, int buf_size, int data)
     return cur_ptr-buf_ptr;
 }
 
-int int_to_hex_strn(char *buf_ptr, int buf_size, unsigned int data)
+static int int_to_hex_strn(char *buf_ptr, int buf_size, unsigned int data)
 {
     char *cur_ptr;
     char *end_ptr;

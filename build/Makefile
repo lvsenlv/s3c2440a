@@ -4,15 +4,19 @@ LD                  = arm-linux-ld
 AR                  = arm-linux-ar
 OBJCOPY             = arm-linux-objcopy
 OBJDUMP             = arm-linux-objdump
-CFLAGS              = -Wall -Werror -O3
+CFLAGS              = -Wall -Werror -O3 
 CPPFLAGS            = -nostdinc -fno-builtin
 SRC_DIR             = ../src
 INC_DIR             = ../include
 OBJ_DIR             = ./object
 LIB_DIR             = ../lib
-LIBS                = -L../lib/libc/build/ -lc
+LIBS                = -L../lib/easy_libc/build -leasy_libc \
+					  -L/usr/local/gcc-3.4.5-glibc-2.3.6/lib \
+					  -L/usr/local/gcc-3.4.5-glibc-2.3.6/arm-linux/lib \
+					  -L/usr/local/gcc-3.4.5-glibc-2.3.6/lib/gcc/arm-linux/3.4.5 \
+					  -lgcc
 OBJS                = main.o nand_flash.o uart.o
-DEF                 = -D__REDIRECTION
+DEF                 = -D__ARM
 INC                 = -I../include
 TARGET              = $(TARGET_BASE_NAME)
 
@@ -29,14 +33,15 @@ $(TARGET) : before $(OBJS)
 	$(OBJCOPY) -O binary -S $@ $@.bin
 	$(OBJDUMP) -D -m arm $@ > dis
 
-before : libc.a
-ifeq ($(wildcard $(LIB_DIR)/libc/build/libc.a),)
-libc.a :
-	$(MAKE) -C $(LIB_DIR)/libc/build DEF="$(DEF)"
-	cp $(LIB_DIR)/libc/include/printf.h $(INC_DIR)
+before : easy_libc.a
+ifeq ($(wildcard $(LIB_DIR)/easy_libc/build/easy_libc.a),)
+easy_libc.a :
+	$(MAKE) -C $(LIB_DIR)/easy_libc/build DEF="$(DEF)"
+	cp $(LIB_DIR)/easy_libc/include/easy_libc.h $(INC_DIR)
 else
-libc.a :
+easy_libc.a :
 endif
+
 
 %.o : $(SRC_DIR)/%.c
 	$(CC) -c $<  -o $(OBJ_DIR)/$@ $(DEF) $(INC) $(CFLAGS) 
@@ -51,5 +56,5 @@ clean :
 
 clean_lib :
 	rm -f $(LIB_DIR)/*.a $(LIB_DIR)/*.h
-	$(MAKE) -C $(LIB_DIR)/libc/build clean
+	$(MAKE) -C $(LIB_DIR)/easy_libc/build clean
 

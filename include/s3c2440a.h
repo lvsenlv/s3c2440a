@@ -8,6 +8,11 @@
 #ifndef __S3C2440A_H
 #define __S3C2440A_H
 
+//Clock is initialized in start_up.s
+#define FCLK                                400 //Unit: MHZ
+#define HCLK                                100 //Unit: MHZ
+#define PCLK                                100 //Unit: MHZ
+
 typedef char            int8_t;
 typedef short           int16_t;
 typedef int             int32_t;
@@ -20,7 +25,6 @@ typedef unsigned int    uint32_t;
 #define ALIGN_4K                            __attribute__((aligned(4)))
 #define PRINTF_FORMAT                       __attribute__((__format__ (__printf__, 1, 2)))
 
-
 #define NOP() \
         do \
         { \
@@ -29,14 +33,11 @@ typedef unsigned int    uint32_t;
             ); \
         }while(0)
 
-//Clock is initialized in start_up.s
-#define FCLK                                400 //Unit: MHZ
-#define HCLK                                100 //Unit: MHZ
-#define PCLK                                100 //Unit: MHZ
-
 #define GPIO_BASE_ADDR                      ((uint32_t)0x56000000)
 #define GPIOF_BASE_ADDR                     (GPIO_BASE_ADDR + 0x50)
+#define GPIOH_BASE_ADDR                     (GPIO_BASE_ADDR + 0x70)
 #define GPIOF                               ((gpio_reg_t *)GPIOF_BASE_ADDR)
+#define GPIOH                               ((gpio_reg_t *)GPIOH_BASE_ADDR)
 
 #define SDRAM_START_ADDR                    ((uint32_t)0x30000000)
 

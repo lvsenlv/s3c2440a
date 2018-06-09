@@ -11,6 +11,7 @@ SECTIONS{
     . = ALIGN(4);
     .data : AT((LOADADDR(.text)+SIZEOF(.text)+0x3)&~(0x3)) { *(.data) }
 
-    . = ALIGN(4);
-    .bss : { *(.bss) }
+    __bss_start = .;
+    .bss ALIGN(4)  : { *(.bss)  *(COMMON)  }
+    __bss_end = .;
 }

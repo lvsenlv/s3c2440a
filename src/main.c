@@ -6,20 +6,28 @@
  ************************************************************************/
 
 #include "led.h"
+#include "uart.h"
+#include "easy_libc.h"
 
 int main(void)
 {
+    char buf[1024];
+    int i = 0;
+    int res;
+    
     do
     {
-        LED_BUSY_ON();
-        delay(0xFFFF);
-        LED_BUSY_OFF();
-        LED_ERR_ON();
-        delay(0xFFFF);
-        LED_ERR_OFF();
         LED_READY_ON();
-        delay(0xFFFF);
+        delay(0xFFFFF);
         LED_READY_OFF();
+        delay(0xFFFFF);
+
+        res = int_to_strn(buf, sizeof(buf), i++);
+        buf[res++] = '\r';
+        buf[res++] = '\n';
+        buf[res++] = '\0';
+
+        uart_send_str(buf);
     }while(1);
 
     return 0;
