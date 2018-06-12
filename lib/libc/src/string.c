@@ -20,6 +20,26 @@
 #include "ctype.h"
 #include "string.h"
 
+extern void putc(unsigned char c);
+int puts(const char *s)
+{
+    int i = 0;
+	while (*s) {
+    	putc(*s);
+    	s++;
+        i++;
+	}
+    putc('\n');
+    putc('\r');
+    return i+2;
+}
+
+int putchar(int c)
+{
+    putc((unsigned char)c);
+    return c;
+}
+
 #ifndef __HAVE_ARCH_STRNICMP
 /**
  * strnicmp - Case insensitive, length-limited string comparison

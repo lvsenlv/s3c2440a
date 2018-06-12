@@ -11,9 +11,10 @@
 
 int main(void)
 {
-    char buf[1024];
-    int i = 0;
-    int res;
+    char buf[64];
+
+    int_to_strn(buf, sizeof(buf), 123);
+    easy_printf("test\n");
     
     do
     {
@@ -21,13 +22,6 @@ int main(void)
         delay(0xFFFFF);
         LED_READY_OFF();
         delay(0xFFFFF);
-
-        res = int_to_strn(buf, sizeof(buf), i++);
-        buf[res++] = '\r';
-        buf[res++] = '\n';
-        buf[res++] = '\0';
-
-        uart_send_str(buf);
     }while(1);
 
     return 0;

@@ -86,7 +86,8 @@ typedef char *va_list;
 
 
 int int_to_strn(char *buf_ptr, int buf_size, int data);
-int easy_printf(const char *format_ptr, ...) __attribute__((__format__ (__printf__, 1, 2)));
+//int easy_printf(const char *format_ptr, ...) __attribute__((__format__ (__printf__, 1, 2)));
+int easy_printf(const char *format_ptr, ...);
 int easy_vsnprintf(char *buf_ptr, int buf_size, const char *format_ptr, va_list args);
 void *easy_memset(void *dstpp, int c, size_t len);
 

@@ -113,6 +113,18 @@ int int_to_hex_strn(char *buf_ptr, int buf_size, unsigned int data)
     return cur_ptr-buf_ptr;
 }
 
+int easy_printf(const char *format_ptr, ...)
+{
+    static char buf[1024];
+    va_list args;
+
+    va_start(format_ptr, args);
+    vsnprintf(buf, sizeof(buf), format_ptr, args);
+    va_end(args);
+    
+    return 0;
+}
+
 /*
     Only support for following expression:
     %c    %d    %p    %s    %x

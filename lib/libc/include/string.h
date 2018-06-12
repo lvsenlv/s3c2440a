@@ -13,6 +13,8 @@ extern char * strtok(char *,const char *);
 extern char * strsep(char **,const char *);
 extern size_t strspn(const char *,const char *);
 
+extern int puts(const char *s);
+extern int putchar(int c);
 
 /*
  * Include machine specific inline routines
