@@ -17,7 +17,12 @@
 
 typedef unsigned long int                   op_t;
 typedef unsigned char                       byte;
+typedef unsigned                            chartype;
+typedef long int                            ptrdiff_t;
 #define OPSIZ                               (sizeof(op_t))
+#define	reg_char                            char
+#define CHECK_BOUNDS_LOW(ARG)               (ARG)
+#define CHECK_BOUNDS_HIGH(ARG)              (ARG)
 
 extern struct timeval g_StartTime, g_StopTime;
     
@@ -47,7 +52,13 @@ extern struct timeval g_StartTime, g_StopTime;
 typedef unsigned int                        size_t;
 typedef unsigned long int                   op_t;
 typedef unsigned char                       byte;
+typedef unsigned                            chartype;
+typedef long int                            ptrdiff_t;
 #define OPSIZ                               (sizeof(op_t))
+#define	reg_char                            char
+#define CHECK_BOUNDS_LOW(ARG)               (ARG)
+#define CHECK_BOUNDS_HIGH(ARG)              (ARG)
+
 //Transplant from glibc-2.3.6 <<<
 
 #ifndef HEX_SYMBOL_UPPERCASE
@@ -78,6 +89,15 @@ typedef char *va_list;
 #define printf                              easy_printf
 #define vsnprintf                           easy_vsnprintf
 #define memset                              easy_memset
+#define strlen                              easy_strlen
+#define strnlen                             easy_strnlen
+#define strcpy                              easy_strcpy
+#define strncpy                             easy_strncpy
+#define strcmp                              easy_strcmp
+#define strncmp                             easy_strncmp
+#define strcat                              easy_strcat
+#define strncat                             easy_strncat
+
 #endif //#ifndef __LINUX
 
 
