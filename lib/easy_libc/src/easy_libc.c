@@ -6,6 +6,16 @@
  ************************************************************************/
 
 #include "easy_libc.h"
+
+typedef unsigned long int                   op_t;
+typedef unsigned char                       byte;
+typedef unsigned                            chartype;
+typedef long int                            ptrdiff_t;
+#define OPSIZ                               (sizeof(op_t))
+#define	reg_char                            char
+#define CHECK_BOUNDS_LOW(ARG)               (ARG)
+#define CHECK_BOUNDS_HIGH(ARG)              (ARG)
+
 int int_to_strn(char *buf_ptr, int buf_size, int data)
 {
     char *cur_ptr;
@@ -819,19 +829,11 @@ ret0:
     return 0;
 }
 
-#ifdef __LINUX
-struct timeval g_StartTime, g_StopTime;
-
-int main(int argc, char **argv)
-{
-    return 0;
-}
-#endif //__LINUX
 
 
 
 
-
+#ifdef __STD_PRINTF
 /*************************************************************************
                        Strandard vsnprintf function
  ************************************************************************/
@@ -840,6 +842,9 @@ int main(int argc, char **argv)
 #define	UINT16                              unsigned short
 #define	UINT8                               unsigned char
 
+
+
+//kernel.h >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #define INT_MAX                             ((int)(~0U>>1))
 #define INT_MIN	                            (-INT_MAX - 1)
 #define UINT_MAX                            (~0U)
@@ -847,6 +852,9 @@ int main(int argc, char **argv)
 #define LONG_MIN                            (-LONG_MAX - 1)
 #define ULONG_MAX                           (~0UL)
 
+
+
+//ctype.h >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /*
  * NOTE! This ctype does not handle EOF like the standard C
  * library is required to.
@@ -860,6 +868,42 @@ int main(int argc, char **argv)
 #define _X                                  0x40    /* hex digit */
 #define _SP                                 0x80    /* hard space (0x20) */
 
+extern unsigned char _ctype[];
+#define __ismask(x)                         (_ctype[(int)(unsigned char)(x)])
+#define isalnum(c)                          ((__ismask(c)&(_U|_L|_D)) != 0)
+#define isalpha(c)                          ((__ismask(c)&(_U|_L)) != 0)
+#define iscntrl(c)                          ((__ismask(c)&(_C)) != 0)
+#define isdigit(c)                          ((__ismask(c)&(_D)) != 0)
+#define isgraph(c)                          ((__ismask(c)&(_P|_U|_L|_D)) != 0)
+#define islower(c)                          ((__ismask(c)&(_L)) != 0)
+#define isprint(c)                          ((__ismask(c)&(_P|_U|_L|_D|_SP)) != 0)
+#define ispunct(c)                          ((__ismask(c)&(_P)) != 0)
+#define isspace(c)                          ((__ismask(c)&(_S)) != 0)
+#define isupper(c)                          ((__ismask(c)&(_U)) != 0)
+#define isxdigit(c)                         ((__ismask(c)&(_D|_X)) != 0)
+#define isascii(c)                          (((unsigned char)(c))<=0x7f)
+#define toascii(c)                          (((unsigned char)(c))&0x7f)
+
+static inline unsigned char __tolower(unsigned char c)
+{
+    if (isupper(c))
+        c -= 'A'-'a';
+    return c;
+}
+
+static inline unsigned char __toupper(unsigned char c)
+{
+    if (islower(c))
+        c -= 'a'-'A';
+    return c;
+}
+
+#define tolower(c)                          __tolower(c)
+#define toupper(c)                          __toupper(c)
+
+
+
+//ctype.c >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 unsigned char _ctype[] = {
     _C,_C,_C,_C,_C,_C,_C,_C,                                /* 0-7 */
     _C,_C|_S,_C|_S,_C|_S,_C|_S,_C|_S,_C,_C,                 /* 8-15 */
@@ -887,40 +931,9 @@ unsigned char _ctype[] = {
     _L,_L,_L,_L,_L,_L,_L,_P,_L,_L,_L,_L,_L,_L,_L,_L,        /* 240-255 */
 };
 
-#define __ismask(x)                         (_ctype[(int)(unsigned char)(x)])
 
-#define isalnum(c)                          ((__ismask(c)&(_U|_L|_D)) != 0)
-#define isalpha(c)                          ((__ismask(c)&(_U|_L)) != 0)
-#define iscntrl(c)                          ((__ismask(c)&(_C)) != 0)
-#define isdigit(c)                          ((__ismask(c)&(_D)) != 0)
-#define isgraph(c)                          ((__ismask(c)&(_P|_U|_L|_D)) != 0)
-#define islower(c)                          ((__ismask(c)&(_L)) != 0)
-#define isprint(c)                          ((__ismask(c)&(_P|_U|_L|_D|_SP)) != 0)
-#define ispunct(c)                          ((__ismask(c)&(_P)) != 0)
-#define isspace(c)                          ((__ismask(c)&(_S)) != 0)
-#define isupper(c)                          ((__ismask(c)&(_U)) != 0)
-#define isxdigit(c)                         ((__ismask(c)&(_D|_X)) != 0)
 
-#define isascii(c)                          (((unsigned char)(c))<=0x7f)
-#define toascii(c)                          (((unsigned char)(c))&0x7f)
-
-static inline unsigned char __tolower(unsigned char c)
-{
-    if (isupper(c))
-        c -= 'A'-'a';
-    return c;
-}
-
-static inline unsigned char __toupper(unsigned char c)
-{
-    if (islower(c))
-        c -= 'a'-'A';
-    return c;
-}
-
-#define tolower(c)                          __tolower(c)
-#define toupper(c)                          __toupper(c)
-
+//vsprintf.c >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #define ZEROPAD                             1       /* pad with zero */
 #define SIGN                                2       /* unsigned/signed long */
 #define PLUS                                4       /* show plus */
@@ -929,6 +942,9 @@ static inline unsigned char __toupper(unsigned char c)
 #define SPECIAL                             32      /* 0x */
 #define LARGE                               64      /* use 'ABCDEF' instead of 'abcdef' */
 
+
+
+//div64.h >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /*
  * The semantics of do_div() are:
  *
@@ -944,7 +960,6 @@ static inline unsigned char __toupper(unsigned char c)
  * we call a special __do_div64 helper with completely non standard
  * calling convention for arguments and results (beware).
  */
-
 #ifdef __ARMEB__
 #define __xh "r0"
 #define __xl "r1"
@@ -972,6 +987,77 @@ static inline unsigned char __toupper(unsigned char c)
             n = __res; \
             __rem; \
         })
+
+
+
+//gcclib.h >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+typedef int DItype                          __attribute__ ((mode (DI)));
+typedef unsigned int USItype                __attribute__ ((mode (SI)));
+typedef int SItype                          __attribute__ ((mode (SI)));
+
+#ifdef __ARMEB__
+struct DIstruct {SItype high, low;};
+#else
+struct DIstruct {SItype low, high;};
+#endif
+
+typedef union
+{
+    struct DIstruct s;
+    DItype ll;
+}DIunion;
+
+
+
+//muldi3.c >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#define umul_ppmm(xh, xl, a, b) \
+        { \
+            register USItype __t0, __t1, __t2; \
+            __asm__ ( \
+                "%@ Inlined umul_ppmm                   \n\
+                mov     %2, %5, lsr #16                 \n\
+                mov     %0, %6, lsr #16                 \n\
+                bic     %3, %5, %2, lsl #16             \n\
+                bic     %4, %6, %0, lsl #16             \n\
+                mul     %1, %3, %4                      \n\
+                mul     %4, %2, %4                      \n\
+                mul     %3, %0, %3                      \n\
+                mul     %0, %2, %0                      \n\
+                adds    %3, %4, %3                      \n\
+                addcs   %0, %0, #65536                  \n\
+                adds    %1, %1, %3, lsl #16             \n\
+                adc     %0, %0, %3, lsr #16" \
+            :   "=&r" ((USItype) (xh)), \
+                "=r" ((USItype) (xl)),  \
+                "=&r" (__t0), "=&r" (__t1), "=r" (__t2) \
+            :   "r" ((USItype) (a)), \
+                "r" ((USItype) (b))); \
+        }
+
+#define __umulsidi3(u, v) \
+        ({ \
+            DIunion __w; \
+            umul_ppmm (__w.s.high, __w.s.low, u, v); \
+            __w.ll; \
+        })
+
+DItype __muldi3 (DItype u, DItype v)
+{
+    DIunion w;
+    DIunion uu, vv;
+
+    uu.ll = u,
+    vv.ll = v;
+
+    w.ll = __umulsidi3 (uu.s.low, vv.s.low);
+    w.s.high += ((USItype) uu.s.low * (USItype) vv.s.high
+                + (USItype) uu.s.high * (USItype) vv.s.low);
+
+    return w.ll;
+}
+//muldis.c <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
 
 #define unlikely(x)                         __builtin_expect(!!(x), 0)
 
@@ -1522,3 +1608,5 @@ int vsnprintf_std(char *buf, size_t size, const char *fmt, va_list args)
          */
     return str-buf;
 }
+
+#endif //#ifdef __STD_PRINTF

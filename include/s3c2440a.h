@@ -90,9 +90,4 @@ typedef struct uart_register_struct {
     __IO uint32_t UBRDIV;
 }uart_register_t;
 
-static inline void delay(uint32_t count)
-{
-    for(; count > 0; count--);
-}
-
 #endif

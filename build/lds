@@ -3,7 +3,7 @@ SECTIONS{
     start : AT(0) { ../start_up/start_up.o ../start_up/sys_init.o }
 
     . = 0x30000000;
-    .text : AT(4096) { *(.text) }
+    .text ALIGN(4) : AT(4096) { *(.text) }
 
     .rodata ALIGN(4) : AT((LOADADDR(.text)+SIZEOF(.text)+0x3)&~(0x3)) { *(.rodata*) }
 

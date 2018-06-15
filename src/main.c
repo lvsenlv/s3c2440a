@@ -9,6 +9,11 @@
 #include "uart.h"
 #include "easy_libc.h"
 
+static inline void delay(uint32_t count)
+{
+    for(; count > 0; count--);
+}
+
 int main(void)
 {
     char buf[64];

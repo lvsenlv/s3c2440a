@@ -122,6 +122,15 @@
             NAND->NFCMMD = (uint8_t)cmd; \
         }while(0)
 
+#define NF_READ_BYTE()                      (*(__IO uint8_t *)&NAND->NFDATA)
+#define NF_READ_WORD()                      (*(__IO uint32_t *)&NAND->NFDATA)
+
+#define NF_RESET_ECC() \
+        do \
+        { \
+            NAND->NFCONT |= 0x1 << 4; \
+        }while(0)
+
 #define NF_MAIN_ECC_UNLOCK() \
         do \
         { \
