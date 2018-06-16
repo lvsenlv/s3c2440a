@@ -66,4 +66,6 @@ char *easy_strcat(char *dest, const char *src);
 char *easy_strncat(char *s1, const char *s2, size_t n);
 int vsnprintf_std(char *buf, size_t size, const char *fmt, va_list args);
 
+extern void uart_send_str(const char *str);
+
 #endif

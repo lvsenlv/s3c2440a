@@ -103,6 +103,8 @@ int easy_printf(const char *format_ptr, ...)
     va_start(args, format_ptr);
     vsnprintf(buf, sizeof(buf), format_ptr, args);
     va_end(args);
+
+    uart_send_str(buf);
     
     return 0;
 }

@@ -40,7 +40,7 @@ clean_all : clean clean_lib
 clean :
 	rm -rf $(OBJ_DIR) $(TARGET_BASE_NAME)* ../start_up/*.o dis fast
 
-lib_dep : easy_libc libc
+lib_dep : easy_libc 
 
 easy_libc :
 	$(MAKE) -C $(LIB_DIR)/$@/build DEF="$(DEF)"

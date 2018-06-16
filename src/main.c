@@ -16,17 +16,16 @@ static inline void delay(uint32_t count)
 
 int main(void)
 {
-    char buf[64];
-
-    int_to_strn(buf, sizeof(buf), 123);
-    easy_printf("test\n");
+    int i = 0;
     
     do
     {
         LED_READY_ON();
-        delay(0xFFFFF);
+        delay(0x5FFFF);
         LED_READY_OFF();
-        delay(0xFFFFF);
+        delay(0x5FFFF);
+
+        printf("%d\r\n", i++);
     }while(1);
 
     return 0;
