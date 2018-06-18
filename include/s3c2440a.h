@@ -10,8 +10,8 @@
 
 //Clock is initialized in start_up.s
 #define FCLK                                400 //Unit: MHZ
-#define HCLK                                100 //Unit: MHZ
-#define PCLK                                100 //Unit: MHZ
+#define HCLK                                133 //Unit: MHZ
+#define PCLK                                133 //Unit: MHZ
 
 typedef char            int8_t;
 typedef short           int16_t;

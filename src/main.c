@@ -21,9 +21,9 @@ int main(void)
     do
     {
         LED_READY_ON();
-        delay(0x5FFFF);
+        delay(0xFFFFF);
         LED_READY_OFF();
-        delay(0x5FFFF);
+        delay(0xFFFFF);
 
         printf("%d\r\n", i++);
     }while(1);
