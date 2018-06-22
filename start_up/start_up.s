@@ -10,6 +10,48 @@
 .global _start
 
 _start :
+    b   Reset
+@定义中断向量
+@@0x04: 未定义指令中止模式的向量地址
+handle_undef:
+    b   handle_undef
+
+@@0x08: 管理模式的向量地址，通过SWI指令进入此模式
+handle_SWI:
+    b   handle_SWI
+
+@@0x0c: 指令预取终止导致的异常的向量地址
+handle_prefetch_abort:
+    b   handle_prefetch_abort
+
+@@0x10: 数据访问终止导致的异常的向量地址
+handle_data_abort:
+    b   handle_data_abort
+
+@@0x14: 保留
+handle_not_used:
+    b   handle_not_used
+
+@@0x18: 中断模式的向量地址
+    b   handle_IRQ
+
+@@0x1c: 快中断模式的向量地址
+handle_FIQ:
+    b   handle_FIQ
+
+@CPSR:
+@  bit7: 1 - Diable FIQ    0 - Enable FIQ
+@  bit6: 1 - Diable IRQ    0 - Enable IRQ
+@  bit5: Status
+@  bit0~bit4: 
+@        10000 - 用户模式
+@        10001 - FIQ模式
+@        10010 - IRQ模式
+@        10011 - 管理模式
+@        10111 - 中止模式
+@        11111 - 系统模式
+
+Reset:
     @Close watch dog
     mov     r0, #0x53000000
     ldr     r1, [r0]
@@ -115,10 +157,25 @@ sram_to_sdram:
     
     ldr     sp, =4096
     bl      sys_init
+
+    msr     cpsr_c, #0xd2           @ 进入中断模式
+    ldr     sp, =0x34000000         @ 设置中断模式栈指针
     
-    ldr     sp, =0x34000000
+    msr     cpsr_c, #0xd3           @ 进入管理模式，上电后默认进入管理模式
+    ldr     sp, =0x33F00000         @ 设置用户模式栈指针
+    ldr     pc, =IRQ_init           @ 初始化中断配置
+    msr     cpsr_c, #0x53           @ 开IRQ中断
+    ldr     lr, =halt_loop          @ 设置返回地址
     ldr     pc, =main
 
 halt_loop :
-    b   halt_loop
+    b       halt_loop
+
+handle_IRQ:
+    sub     lr, lr, #4              @ 计算返回地址
+    stmdb   sp!, {r0-r12, lr}       @ 保存使用到的寄存器，注意：此时的sp是中断模式的sp，初始值是上面设置的0x34000000
+    ldr     lr, =IRQ_exit           @ 设置调用ISR即EINT_Handle函数后的返回地址  
+    ldr     pc, =IRQ_process        @ 调用中断服务函数，在interrupt.c中
     
+IRQ_exit:
+    ldmia   sp!, {r0-r12, pc}^      @ 中断返回，^表示将spsr的值复制到cpsr
