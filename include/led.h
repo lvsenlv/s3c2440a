@@ -54,4 +54,10 @@
         { \
             LED_READY_GPIO->DAT |= 0x1 << LED_READY_PIN; \
         }while(0)
+
+#define LED_READY_TOGGLE() \
+        do \
+        { \
+            LED_READY_GPIO->DAT ^= 0x1 << LED_READY_PIN; \
+        }while(0)
 #endif

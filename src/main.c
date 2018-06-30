@@ -6,27 +6,22 @@
  ************************************************************************/
 
 #include "led.h"
-#include "uart.h"
 #include "easy_libc.h"
-
-static inline void delay(uint32_t count)
-{
-    for(; count > 0; count--);
-}
+#include "key.h"
+#include "timer.h"
 
 int main(void)
 {
-    int i = 0;
-    
-    do
-    {
-        LED_READY_ON();
-        delay(0xFFFFF);
-        LED_READY_OFF();
-        delay(0xFFFFF);
+    key_init();
+    timer_init();
 
-        printf("%d\r\n", i++);
-    }while(1);
+    while(1)
+    {
+        LED_BUSY_ON();
+        sleep(1);
+        LED_BUSY_OFF();
+        sleep(1);
+    }
 
     return 0;
 }

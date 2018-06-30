@@ -4,7 +4,7 @@
 @   3: FCLK=400MHZ,     HCLK=100MHZ,    PCLK=100MHZ
 @   4: FCLK=400MHZ,     HCLK=133HZ,     PCLK=133HZ
 
-.equ CLOCK_FREQ, 4
+.equ CLOCK_FREQ, 3
 
 .text
 .global _start
