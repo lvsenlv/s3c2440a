@@ -15,9 +15,10 @@
 #define usleep(ti)                          timer_delay(ti)
 
 #define TIMER0_1_PRESCALER                  249  //Prescaler: 249+1
-#define TIMER0_1_DIVIDER                    0x22 //Divider: 8
+#define TIMER0_1_DIVIDER                    0x22 //Divider: 8, it is only used for TIMER->TCFG1
+#define TIMER0_1_ACTUAL_DIVIDER             8
 
-extern uint32_t g_delay_count;
+__IO extern uint32_t g_delay_count;
 
 void timer_init(void);
 void timer_interrupt_init(void);

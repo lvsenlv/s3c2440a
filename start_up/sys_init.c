@@ -192,5 +192,6 @@ void sys_init(void)
         return;
     }
 
+    debug("Success in sys_init\r\n");
 }
 

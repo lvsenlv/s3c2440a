@@ -21,7 +21,7 @@ void key_init(void)
 void key_interrupt_init(void)
 {
     //Enable EINT11 for GPIOG3
-    EINT->EINTMASK &= ~EINT11_MASK;
+    EINT->EINTMASK &= ~EINT_MASK_EINT11;
     
     /*
      * ARB_SEL0 = 00b, ARB_MODE0 = 0: REQ1 > REQ3, i.e. EINT0 > EINT2
@@ -31,8 +31,8 @@ void key_interrupt_init(void)
     INTERRUPT->PRIORITY = INTERRUPT->PRIORITY & ((~0x01) | (0x3<<7));
     
     //Clear interrupt
-    INTERRUPT->SRCPND |= EINT0_MASK | EINT2_MASK | EINT8_23_MASK;
+    //INTERRUPT->SRCPND |= EINT0_MASK | EINT2_MASK | EINT8_23_MASK;
     
     //Enable EINT0 EINT2 EINT11
-    INTERRUPT->INTMSK &= ~(EINT0_MASK | EINT2_MASK | EINT8_23_MASK);
+    INTERRUPT->INTMSK &= ~(INT_MASK_EINT0 | INT_MASK_EINT2 | INT_MASK_EINT8_23);
 }

@@ -24,9 +24,9 @@ typedef unsigned int                        uint32_t;
 #define PACKED                              __attribute__((packed))
 #define ALIGN_4K                            __attribute__((aligned(4)))
 #define PRINTF_FORMAT                       __attribute__((__format__ (__printf__, 1, 2)))
-#define WARNING                             "[Warning] "
-#define ERROR                               "[Error] "
-#define FATAL                               "[Fatal Error] "
+#define WARNING                             "[Warning *] "
+#define ERROR                               "[Error *] "
+#define FATAL                               "[Fatal Error *] "
 
 #define NOP() \
         do \
@@ -53,15 +53,20 @@ typedef unsigned int                        uint32_t;
 #define UART0                               ((uart_reg_t *)UART0_BASE_ADDR)
 
 #define EINT_BASE_ADDR                      ((uint32_t)0x56000088)
-#define EINT                                ((eint_reg_t *)EINT_BASE_ADDR)
 #define INTERRUPT_BASE_ADDR                 ((uint32_t)0x4A000000)
+#define EINT                                ((eint_reg_t *)EINT_BASE_ADDR)
 #define INTERRUPT                           ((int_reg_t *)INTERRUPT_BASE_ADDR)
-#define EINT0_MASK                          (0x1 << 0)
-#define EINT2_MASK                          (0x1 << 2)
-#define EINT8_23_MASK                       (0x1 << 5)
-#define EINT11_MASK                         (0x1 << 11) //It is only used for EINT->EINTPEND / EINT->EINTMASK
-#define INT_TIMER0_MASK                     (0x1 << 10)
-#define INT_TIMER1_MASK                     (0x1 << 11)
+#define INT_MASK_EINT0                      (0x1 << 0)
+#define INT_MASK_EINT2                      (0x1 << 2)
+#define INT_MASK_EINT8_23                   (0x1 << 5)
+#define INT_MASK_TIMER0                     (0x1 << 10)
+#define INT_MASK_TIMER1                     (0x1 << 11)
+#define EINT_MASK_EINT11                    (0x1 << 11) //It is only used for EINT->EINTPEND / EINT->EINTMASK
+#define INT_OFFSET_EINT0                    0
+#define INT_OFFSET_EINT2                    2
+#define INT_OFFSET_EINT8_23                 5
+#define INT_OFFSET_TIMER0                   10
+#define INT_OFFSET_TIMER1                   11
 
 #define TIMER_BASE_ADDR                     ((uint32_t)0x51000000)
 #define TIMER                               ((timer_reg_t *)TIMER_BASE_ADDR)

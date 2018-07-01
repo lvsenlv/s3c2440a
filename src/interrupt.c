@@ -26,37 +26,35 @@ void IRQ_process(void)
 
     switch(offset)
     {
-        case INT_TIMER0_MASK:
+        case INT_OFFSET_TIMER0:
             LED_READY_TOGGLE();
             break;
-        case INT_TIMER1_MASK:
+        case INT_OFFSET_TIMER1:
             if(0 != g_delay_count)
             {
                 g_delay_count--;
             }
             
             break;
-        case EINT0_MASK:
-            printf("Detect external interrupt 0\n");
+        case INT_OFFSET_EINT0:
             break;
-        case EINT2_MASK:
-            printf("Detect external interrupt 2\n");
+        case INT_OFFSET_EINT2:
             break;
-        case EINT8_23_MASK:
+        case INT_OFFSET_EINT8_23:
             eint_offset = EINT->EINTPEND;
-            if(eint_offset & EINT11_MASK) //EINT11
+            if(eint_offset & EINT_MASK_EINT11) //EINT11
             {
-                EINT->EINTPEND |= EINT11_MASK;
-                printf("Detect external interrupt 11\n");
+                EINT->EINTPEND |= EINT_MASK_EINT11;
             }
             
             break;
         default :
-            printf(WARNING"Detect unknown interrupt signal, offset=0x%x\n", offset);
+            printf(WARNING"Detect unknown interrupt signal, offset=0x%x\r\n", offset);
             break;
     }
 
     //Clear interrupt
-    INTERRUPT->SRCPND |= 1 << offset;
-    INTERRUPT->INTPND |= 1 << offset;
+    //printf("SRCPND=0x%x, INTPND=0x%x\r\n", INTERRUPT->SRCPND, INTERRUPT->INTPND);
+    INTERRUPT->SRCPND = 1 << offset;
+    INTERRUPT->INTPND = INTERRUPT->INTPND;
 }

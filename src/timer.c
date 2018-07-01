@@ -6,8 +6,9 @@
  ************************************************************************/
 
 #include "timer.h"
+#include "easy_libc.h"
 
-uint32_t g_delay_count = 0;
+__IO uint32_t g_delay_count = 0;
 
 void timer_init(void)
 {
@@ -16,7 +17,7 @@ void timer_init(void)
     TIMER->TCFG1 &= ~0xFF;
     TIMER->TCFG1 |= TIMER0_1_DIVIDER;
 
-    TIMER->TCNTB0 = (PCLK * 1000000 / (TIMER0_1_PRESCALER+1) / TIMER0_1_DIVIDER) & 0xFFFF;
+    TIMER->TCNTB0 = (PCLK * 1000000 / (TIMER0_1_PRESCALER+1) / TIMER0_1_ACTUAL_DIVIDER / 2) & 0xFFFF; // .../2 means occur interrupt per 0.5s
     TIMER->TCMPB0 = 0;
 
     //Configure timer0
@@ -28,10 +29,10 @@ void timer_init(void)
 void timer_interrupt_init(void)
 {
     //Clear interrupt
-    INTERRUPT->SRCPND |= INT_TIMER0_MASK | INT_TIMER1_MASK;
+    INTERRUPT->SRCPND |= INT_MASK_TIMER0 | INT_MASK_TIMER1;
     
     //Enable INT_TIMER0 INT_TIMER1
-    INTERRUPT->INTMSK &= ~(INT_TIMER0_MASK | INT_TIMER1_MASK);
+    INTERRUPT->INTMSK &= ~(INT_MASK_TIMER0 | INT_MASK_TIMER1);
 }
 
 /*
@@ -44,7 +45,7 @@ void timer_delay(uint32_t time_us)
     /*
         If PCLK = 100MHZ, so frequency = 50000, and it means periods is 20us
     */
-    frequency = (PCLK * 1000000 / (TIMER0_1_PRESCALER+1) / TIMER0_1_DIVIDER) & 0xFFFF;
+    frequency = (PCLK * 1000000 / (TIMER0_1_PRESCALER+1) / TIMER0_1_ACTUAL_DIVIDER) & 0xFFFF;
     TIMER->TCMPB1 = 0;
     
     if(1000 > time_us) //Precision: us
@@ -59,13 +60,13 @@ void timer_delay(uint32_t time_us)
     }
     else
     {
-        TIMER->TCNTB1 = frequency/10; //Occurs interrupt per 100ms
-        g_delay_count = time_us / 100000;
+        TIMER->TCNTB1 = frequency; //Occurs interrupt per 100ms
+        g_delay_count = time_us / 1000000;
     }
 
     if(0 == g_delay_count)
     {
-        TIMER->TCON &= 0x1 << 8; //Stop TIMER1
+        TIMER->TCON &= ~(0x1 << 8); //Stop TIMER1
         return;
     }
 
@@ -75,5 +76,5 @@ void timer_delay(uint32_t time_us)
 
     while(0 != g_delay_count);
 
-    TIMER->TCON &= 0x1 << 8; //Stop TIMER1
+    TIMER->TCON &= ~(0x1 << 8); //Stop TIMER1
 }

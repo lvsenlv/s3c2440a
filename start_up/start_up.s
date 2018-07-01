@@ -163,7 +163,9 @@ sram_to_sdram:
     
     msr     cpsr_c, #0xd3           @ 进入管理模式，上电后默认进入管理模式
     ldr     sp, =0x33F00000         @ 设置用户模式栈指针
+    ldr     lr, =IRQ_init_return
     ldr     pc, =IRQ_init           @ 初始化中断配置
+IRQ_init_return:
     msr     cpsr_c, #0x53           @ 开IRQ中断
     ldr     lr, =halt_loop          @ 设置返回地址
     ldr     pc, =main
@@ -176,6 +178,5 @@ handle_IRQ:
     stmdb   sp!, {r0-r12, lr}       @ 保存使用到的寄存器，注意：此时的sp是中断模式的sp，初始值是上面设置的0x34000000
     ldr     lr, =IRQ_exit           @ 设置调用ISR即EINT_Handle函数后的返回地址  
     ldr     pc, =IRQ_process        @ 调用中断服务函数，在interrupt.c中
-    
 IRQ_exit:
     ldmia   sp!, {r0-r12, pc}^      @ 中断返回，^表示将spsr的值复制到cpsr
